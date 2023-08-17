@@ -14,7 +14,6 @@ with open(config_path, 'r') as config_file:
     config = json.load(config_file)
     API_KEY = config['API_KEY']
     
-API_KEY= "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"
 openai.api_key = API_KEY
 
 app = Flask(__name__)
