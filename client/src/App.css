@@ -15,6 +15,7 @@ body {
   margin: 2rem 0 0 0;
 }
 
+
 .App h2 {
   margin-top: 5px;
   color: #4A6987;
@@ -25,24 +26,55 @@ body {
 .App .p2 {
   color: #1a1a11;
   font-size: 1rem;
-  margin-bottom: 0px;
-}
-
-.App .p3 {
+  margin-bottom: 10px;
   margin-top: 0px;
-  color: #1a1a11;
-  font-size: 1rem;
 }
 
-.App .p4 {
+.avg-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.App .avg {
+  color: #4A6987;
+  font-size: 4rem;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  text-align: center;
+  /*Circle*/
+  border-radius: 50%; /* Make it circular */
+  background: white; /* Set background to white */
+  padding: 10px; /* padding for spacing */
+  display: inline-block; /*background only wraps the text */
+  border: 5px solid #4A6987;
+  margin: 0 auto;
+  width: 8%; /* best for desktop screens */
+}
+
+
+.App .avg.rank-red {
+  color: red;
+}
+
+.App .avg.rank-yellow {
+  color: yellow;
+}
+
+.App .avg.rank-green {
+  color: green;
+}
+
+.App .endMsg {
   margin-top: 20px;
   color: #1a1a11;
   font-size: 0.9rem;
 }
 
-.input-wrapper {
-  position: relative;
+.upload-wrapper{
+  margin-bottom: 30px;
 }
+
 .upload-wrapper input[type="file"] {
   position: absolute;
   left: -9999px;
@@ -109,10 +141,10 @@ body {
   background: white;
   width: auto;
   height: auto;
-  padding:0px 10px;
+  padding:0px 20px;
   border: 3px solid #4A6987; 
   border-radius: 8px; 
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .result img {
@@ -132,3 +164,35 @@ body {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+@media (max-width: 600px) { /*best for phones*/
+  .App h1 {
+    font-size: 3rem; 
+    text-align: center;
+  }
+  .App h2 {
+    font-size: 2rem;
+    text-align: center;
+  }
+  .App .p2 {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+  .upload-wrapper label {
+    width: 350px;
+    font-size: 35px;
+  } 
+  .upload-wrapper button {
+    width: 350px;
+    font-size: 35px;
+  }
+  .App .avg {
+    width: 18%; 
+  }
+  .result p {
+    line-height: 1.7rem;
+    font-size: 1.5rem;
+    white-space: pre-line;
+  }
+}
+

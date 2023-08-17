@@ -5,12 +5,17 @@ from PIL import Image
 import pytesseract
 import traceback
 import openai
-#pytesseract.pytesseract.tesseract_cmd = r'C:\Users\Navya\AppData\Local\Programs\Tesseract-OCR'
-#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
+import json
 
 tesseract_path = r'C:\Users\Navya\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
-API_Key = "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"
-openai.api_key = API_Key
+config_path = os.path.join(os.path.dirname(__file__), 'config.json')
+
+with open(config_path, 'r') as config_file:
+    config = json.load(config_file)
+    API_KEY = config['API_KEY']
+    
+API_KEY= "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"
+openai.api_key = API_KEY
 
 app = Flask(__name__)
 CORS(app)
@@ -43,11 +48,20 @@ def upload_image():
                     max_tokens= 1024
         )
         
-        return jsonify({'result': response}), 200
+       
+        rankings = []
+        rank = 0
+        lines = response.choices[0].text.strip().split("\n")
+        for line in lines:
+            rankings.append(int(line[0]))
+        rank = round(sum(rankings) / len(rankings)) 
+
+        print("Server Response:", {'result': response, 'rank': rank})
+        return jsonify({'result': response}, {"rank": rank}), 200
 
     except Exception as e:
         print("Error processing image:", str(e))
-        traceback.print_exc()  # Print the traceback for detailed error information
+        traceback.print_exc() 
         return jsonify({'error': 'Error processing the image.'}), 500
 
 

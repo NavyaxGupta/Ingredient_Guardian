@@ -5,8 +5,18 @@ import "./App.css";
 function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [textResult, setTextResult] = useState("Analysis will display here.");
-  const [analysisDone, setAnalysisDone] = useState(false); // New state variable
+  const [avgResult, setAvgResult] = useState(null);
+  const [analysisDone, setAnalysisDone] = useState(false); 
 
+  const getClassFromRank = (rank) => {
+    if (rank >= 0 && rank <= 1) {
+      return 'rank-red';
+    } else if (rank >= 2 && rank <= 3) {
+      return 'rank-yellow';
+    } else {
+      return 'rank-green';
+    }
+  };
 
   const handleChangeImage = e => {
     if(e.target.files[0]){
@@ -28,13 +38,13 @@ function App() {
     try {
       const response = await axios.post('http://localhost:5000/upload', formData);
       console.log("Response Data:", response.data);
-      console.log("array Data:", response.data.result.choices[0].text);
 
-      setTextResult(response.data.result.choices[0].text);
+      setTextResult(response.data[0].result.choices[0].text);
+      setAvgResult(response.data[1].rank);
       setAnalysisDone(true); // Set analysisDone to true after analysis
 
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error('Error with server', error);
       setTextResult('Error processing the image.');
     }
   };  
@@ -43,30 +53,46 @@ function App() {
   <div className="App" role="main">
     <h1>Ingredient Guardian</h1>
     <h2>AI-Powered Ingredient Health Scanner </h2>
-    <p className="p2">Upload a picture of the an Ingredient Label and press Analyze to get started!</p>
-    <p className="p3">You must upload a picture showing only the ingredients then click "Analyze Image"</p>
+
+    <p className="p2">
+    Upload a picture of the an Ingredient Label and press Analyze to get started!
+    <br />
+    You must upload a picture showing only the ingredients then click "Analyze Image"
+    <br />
+    Ingredient Ranking will be on a scale of 0 dangerous - 5 healthy.
+    </p>
+
     <div className="upload-wrapper" > 
-      <label tabindex="0" htmlFor="upload">Upload Image</label>
+      <label htmlFor="upload">Upload Image</label>
       <input type="file" id="upload"  accept='image/*' onChange={handleChangeImage} />
       <button onClick={handleUploadImage}>Analyze Image</button>
     </div>
-   
-    <div className="result">
-  {selectedImage && !analysisDone && (
-    <div className="box-image">
-      <img src={URL.createObjectURL(selectedImage)} alt="thumb" />
-    </div>
-  )}
-  {analysisDone && (
-    textResult.trim().split('\n').map((line, index) => (
-      <div key={index} className="box-p">
-        <p>{line}</p>
-      </div>
-    ))
-  )}
-</div>
 
-    <p className="p4"> Developed by Navya Gupta, this web application uses a React-based frontend, a Flask-based Python server backend, and  OpenAI API.</p>
+    {selectedImage && analysisDone && (
+    <div className='avg-container'>
+      <p className={`avg ${getClassFromRank(avgResult)}`}>{avgResult}</p>
+    </div>
+    )}
+
+    <div className="result">
+    
+    {selectedImage && !analysisDone && (
+      <div className="box-image">
+        <img src={URL.createObjectURL(selectedImage)} alt="thumb" />
+      </div>
+    )}
+
+    {analysisDone && (
+      textResult.trim().split('\n').map((line, index) => (
+        <div key={index} className="box-p">
+          <p>{line}</p>
+        </div>
+      ))
+    )}
+
+    </div>
+
+    <p className="endMsg"> Developed by Navya Gupta, this web application uses a React-based frontend, a Flask-based Python server backend, and  OpenAI API.</p>
   </div>
   );
 }
