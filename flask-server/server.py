@@ -54,7 +54,6 @@ def upload_image():
             rankings.append(int(line[0]))
         rank = round(sum(rankings) / len(rankings)) 
 
-        print("Server Response:", {'result': response, 'rank': rank})
         return jsonify({'result': response}, {"rank": rank}), 200
 
     except Exception as e:
@@ -64,4 +63,4 @@ def upload_image():
 
 
 if __name__ == '__main__':
-    app.run(host=server_address, port=server_port, debug=True)  # Add debug=True here
+    app.run(host=server_address, port=server_port, debug=False)  # Add debug=True here
