@@ -188,6 +188,11 @@ body {
   .App .avg {
     width: 18%; 
   }
+   .result .box-image {
+    width: 95%;
+    padding: 0.5rem;
+    margin-bottom: 40px;
+  }
   .result p {
     line-height: 1.7rem;
     font-size: 1.5rem;
